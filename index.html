@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Since</title>
+    <style>
+        * {
+            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #555;
+            line-height: 1.5
+        }
+        .text-center {
+            text-align: center;
+        }
+        h1 {
+            font-weight: 900;
+            font-size: 25px;
+            padding: 15px;
+        }
+        .calendar {
+            width: 75px;
+            box-shadow: 0 0 5px #c3c3c3;
+            border-radius: 9px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .calendar-top {
+            background: linear-gradient(#ff655c, #eb554d);
+            border-top-left-radius: 9px;
+            border-top-right-radius: 9px;
+            color: #ffffff;
+            font-weight: 700;
+            margin: 0;
+        }
+        .calendar-bottom {
+            border-bottom-left-radius: 9px;
+            border-bottom-right-radius: 9px;
+            background: linear-gradient(#ffffff, #f5f3ef);
+            font-weight: 900;
+            font-size: 200%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h1 class="text-center"><span id="dateDisplay"></span></h1>
+<p class="text-center">Since</p>
+<div class="calendar">
+    <p class="calendar-top">Jul</p>
+    <p class="calendar-bottom">26</p>
+</div>
+<p class="text-center">2021</p>
+<script>
+    function dateDiff(startingDate, endingDate) {
+        var startDate = new Date(new Date(startingDate).toISOString().substr(0, 10));
+        if (!endingDate) {
+            endingDate = new Date().toISOString().substr(0, 10);    // need date in YYYY-MM-DD format
+        }
+        var endDate = new Date(endingDate);
+        if (startDate > endDate) {
+            var swap = startDate;
+            startDate = endDate;
+            endDate = swap;
+        }
+        var startYear = startDate.getFullYear();
+        var february = (startYear % 4 === 0 && startYear % 100 !== 0) || startYear % 400 === 0 ? 29 : 28;
+        var daysInMonth = [31, february, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        var yearDiff = endDate.getFullYear() - startYear;
+        var monthDiff = endDate.getMonth() - startDate.getMonth();
+        if (monthDiff < 0) {
+            yearDiff--;
+            monthDiff += 12;
+        }
+        var dayDiff = endDate.getDate() - startDate.getDate();
+        if (dayDiff < 0) {
+            if (monthDiff > 0) {
+                monthDiff--;
+            } else {
+                yearDiff--;
+                monthDiff = 11;
+            }
+            dayDiff += daysInMonth[startDate.getMonth()];
+        }
+
+        var weekDiff = parseInt(dayDiff / 7)
+
+        dayDiff = dayDiff - (weekDiff * 7);
+
+        return {
+            'years': yearDiff,
+            'months': monthDiff,
+            'weeks': weekDiff,
+            'days': dayDiff
+        }
+    }
+    function pluralise(string, num) {
+        var suffix = ""
+        if (num === 0 || num > 1){
+            suffix = "s"
+        }
+        return string + suffix;
+    }
+    function updateDisplay(){
+        var el = document.getElementById('dateDisplay');
+        var fromDate = '2021-07-26';
+        var since = dateDiff(fromDate);
+        var output = ""
+        if (since.years) {
+            output += since.years + pluralise("\u00A0year", since.years) + ", "
+        }
+        if (since.months) {
+            output += since.months + pluralise("\u00A0month", since.months) + ", "
+        }
+        if (since.weeks) {
+            output += since.weeks + pluralise("\u00A0week", since.weeks) + ", "
+        }
+        if (since.days) {
+            output += since.days + pluralise("\u00A0day", since.days)
+        }
+        el.innerText = output;
+        setTimeout(updateDisplay, 5000);
+    }
+    updateDisplay();
+</script>
+</body>
+</html>
