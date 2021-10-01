@@ -120,20 +120,27 @@
         var el = document.getElementById('dateDisplay');
         var fromDate = '2021-07-26';
         var since = dateDiff(fromDate);
-        var output = ""
+        var output = "";
+        var parts = [];
         if (since.years) {
-            output += since.years + pluralise("\u00A0year", since.years) + ", "
+            parts.push(since.years + pluralise("&nbsp;year", since.years))
         }
         if (since.months) {
-            output += since.months + pluralise("\u00A0month", since.months) + ", "
+            parts.push(since.months + pluralise("&nbsp;month", since.months))
         }
         if (since.weeks) {
-            output += since.weeks + pluralise("\u00A0week", since.weeks) + ", "
+            parts.push(since.weeks + pluralise("&nbsp;week", since.weeks))
         }
         if (since.days) {
-            output += since.days + pluralise("\u00A0day", since.days)
+            parts.push(since.days + pluralise("&nbsp;day", since.days))
         }
-        el.innerText = output;
+        for( var i=0; i<parts.length; i++ ) {
+            output += parts[i];
+            if ( i < parts.length-1 ) {
+                output += ", ";
+            }
+        }
+        el.innerHTML = output;
         setTimeout(updateDisplay, 5000);
     }
     updateDisplay();
