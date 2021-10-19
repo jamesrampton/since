@@ -56,6 +56,23 @@
             margin: 0;
             color: #555;
         }
+        footer {
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            width: 100%;
+            height: 50px;
+            line-height: 20px;
+            font-weight: 200;
+        }
+        footer a, footer a:visited, footer a:hover {
+            color: inherit;
+        }
+        footer span {
+            font-size: 20px;
+        }
         @media (prefers-color-scheme: dark) {
             * {
                 color: #ffffff;
@@ -77,6 +94,7 @@
     <p class="calendar-bottom">26</p>
 </div>
 <p class="text-center">2021</p>
+<footer>Made by <a href="https://www.jamerampton.uk">James</a> with <span class="x2">☕️</span></footer>
 <script>
     function dateDiff(startingDate, endingDate) {
         var startDate = new Date(new Date(startingDate).toISOString().substr(0, 10));
