@@ -158,10 +158,12 @@
         if (since.months) {
             parts.push(since.months + pluralise("&nbsp;month", since.months))
         }
-        if (since.weeks) {
+        // Don't show weeks if more than 6 months
+        if (since.months < 6 && since.weeks) {
             parts.push(since.weeks + pluralise("&nbsp;week", since.weeks))
         }
-        if (since.days) {
+        // Don't show days if more than 3 months
+        if (since.months < 3 && since.days) {
             parts.push(since.days + pluralise("&nbsp;day", since.days))
         }
         for( var i=0; i<parts.length; i++ ) {
